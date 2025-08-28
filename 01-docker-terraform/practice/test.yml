@@ -1,0 +1,76 @@
+services:
+  postgres:
+    image: postgres
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: kestra
+      POSTGRES_PASSWORD: k3str4
+      POSTGRES_DB: postgres-zoomcamp
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+volumes:
+  postgres-data:
+
+
+docker run -it \
+  -e POSTGRES_USER="root" \
+  -e POSTGRES_PASSWORD="root" \
+  -e POSTGRES_DB="nyc_data" \
+  -v $(pwd)/nyc_data:/var/lib/postgresql/data \
+  -p 5432:5432 \
+postgres:13
+
+URL="https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2021-06.csv.gz"
+
+uv run ingest_data.py \
+    --user=root \
+    --password=root \
+    --host=localhost \
+    --port=5432 \
+    --db=nyc_data \
+    --table-name=yellow_taxi_data \
+    --url=${URL}
+
+
+URL="https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2021-06.csv.gz"
+docker run ingest_data:v001 \
+    --user=root \
+    --password=root \
+    --host=host.docker.internal \
+    --port=5432 \
+    --db=nyc_data \
+    --table-name=yellow_taxi_data \
+    --url=${URL}   
+
+
+
+docker run -it \
+  -e PGADMIN_DEFAULT_EMAIL="admin@admin.com" \
+  -e PGADMIN_DEFAULT_PASSWORD="root" \
+  -p 8000:80 \
+dpage/pgadmin4
+
+
+# network create
+
+docker network create pg-network
+
+docker run -it \
+  -e POSTGRES_USER="root" \
+  -e POSTGRES_PASSWORD="root" \
+  -e POSTGRES_DB="nyc_data" \
+  -v $(pwd)/nyc_data:/var/lib/postgresql/data \
+  -p 5432:5432 \
+  --network=pg-network \
+  --name=pg-database \
+postgres:13
+
+docker run -it \
+  -e PGADMIN_DEFAULT_EMAIL="admin@admin.com" \
+  -e PGADMIN_DEFAULT_PASSWORD="root" \
+  -p 8000:80 \
+  --network=pg-network \
+  --name=pgadmin \
+dpage/pgadmin4
