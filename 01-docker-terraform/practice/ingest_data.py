@@ -2,7 +2,7 @@ from time import time
 import os
 import argparse
 import pandas as pd
-from sqlalchemy import create_engine, table
+from sqlalchemy import create_engine
 
 
 def main(args):
@@ -52,8 +52,6 @@ def main(args):
         print('inserted another chunk, took %.3f second' % (t_end - t_start))
 
     print("All chunks inserted")
-
-
 
 
 if __name__ == "__main__":
