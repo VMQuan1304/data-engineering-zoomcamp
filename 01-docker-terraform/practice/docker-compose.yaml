@@ -2,9 +2,9 @@ services:
   pgdatabase:
     image: postgres:13
     environment:
-      - postgres_user=root
-      - postgres_password=root
-      - postgres_db=nyc_data
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=nyc_data
     volumes:
       - "./nyc_data:/var/lib/postgresql/data:rw" 
     ports:
@@ -15,6 +15,9 @@ services:
       - PGADMIN_DEFAULT_EMAIL=admin@admin.com
       - PGADMIN_DEFAULT_PASSWORD=root
     volumes:
-      - "./pgadmin_connection_data:/var/lib/pgadmin:rw"
+      - pgadmin_connection_data:/var/lib/pgadmin:rw
     ports:
       - "8000:80"
+
+volumes:
+  pgadmin_connection_data:
