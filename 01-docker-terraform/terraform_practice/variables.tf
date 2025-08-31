@@ -1,6 +1,6 @@
 variable "credentials" {
   description = "My gg cloud service account"
-  default     = "./gg_terraform_key.json"
+  default     = "./key/gg_terraform_key.json"
 }
 
 variable "project" {
