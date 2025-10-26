@@ -373,4 +373,5 @@ volumes:
 
 networks:
   shared_network:
-    external: true
+    driver: bridge
+    # external: true
