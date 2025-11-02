@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: staging
+    database: data-470504
+    schema: data_trip_all
+
+    tables:
+      - name: yellow_trips_data
+      - name: green_trips_data

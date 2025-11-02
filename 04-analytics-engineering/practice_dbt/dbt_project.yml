@@ -37,6 +37,10 @@ clean-targets:         # directories to be removed by `dbt clean`
 
 models:
   taxi_rides_ny:
+    # staging:
+    #   +schema: stg_data_trip_all
+    # seeds:
+    #   +schema: stg_data_trip_all
     # Applies to all files under models/example/
     # example:
     #   +materialized: table
