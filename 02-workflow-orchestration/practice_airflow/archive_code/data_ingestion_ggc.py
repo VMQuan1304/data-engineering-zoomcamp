@@ -55,7 +55,7 @@ def data_ingestion_ggc():
     upload_to_gcs_task = LocalFilesystemToGCSOperator(
         task_id="upload_to_gcs",
         src=f"{AIRFLOW_HOME}/{PARQUET_NAME}",
-        dst=f"data/{PARQUET_NAME}",
+        dst=f"yellow_taxi/{PARQUET_NAME}",
         bucket="data-470504-demo-bucket",
         gcp_conn_id="ggc_bigquery",  # your Airflow GCP connection
     )
@@ -63,7 +63,7 @@ def data_ingestion_ggc():
     create_bigquery_table_task = GCSToBigQueryOperator(
         task_id="create_table",
         bucket="data-470504-demo-bucket",
-        source_objects=[f"data/*.parquet"],
+        source_objects=["yellow_taxi/*.parquet"],
         source_format="PARQUET",
         destination_project_dataset_table="data-470504.demo_dataset.yellow_taxidata_table",
         gcp_conn_id="ggc_bigquery",
@@ -71,6 +71,6 @@ def data_ingestion_ggc():
         # force_delete=True,
     ) 
 
-    curl_task >> unzip_task >> convert_csv_to_parquet_task >>  upload_to_gcs_task >> create_bigquery_table_task
+    curl_task >> unzip_task >> convert_csv_to_parquet_task >> upload_to_gcs_task >> create_bigquery_table_task
 
 data_ingestion_ggc()
